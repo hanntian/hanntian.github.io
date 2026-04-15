@@ -9,7 +9,7 @@
 # Basic Site Settings
 locale                   : "en-US"
 site_theme               : "default" # The available themes options are "default", "air", "sunrise", "mint", "dirt" and "contrast"
-title                    : "Hann Tian / Personal space"
+title                    : "Hann Tian / About Me"
 title_separator          : "-"
 name                     : &name "Hann Tian"
 description              : &description "I focus on making LLM more controllable and reliable in real-world applications."   # Update this with a general description of your site, this is the default if not overridden by a page
