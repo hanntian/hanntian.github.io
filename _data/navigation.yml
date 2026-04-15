@@ -13,12 +13,13 @@ main:
 
   - title: "Research"
     url: /research/      
-    
-  - title: "Selected Learning"
-    url: /learning/
+
         
   - title: "Blog Posts"
     url: /year-archive/
+      
+  - title: "Selected Learning"
+    url: /learning/
     
   - title: "CV"
     url: /cv/
