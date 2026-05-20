@@ -1,7 +1,7 @@
 ---
 title: 'Transformer Series (1) - Byte-pair Encoding'
-date: 2025-08-14
-permalink: /posts/2025/08/blog-post-1/
+date: 2024-08-14
+permalink: /posts/2024/08/blog-post-bpe/
 tags:
   - Basics
   - Transformer
