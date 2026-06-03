@@ -203,11 +203,13 @@
   }
 
   .visible-links {
-    display: table;
+    display: flex;
+    align-items: center;
+    width: 100%;
 
     li {
-      display: table-cell;
-      vertical-align: middle;
+      display: flex;
+      align-items: center;
 
       &:first-child {
         font-weight: bold;
@@ -219,6 +221,8 @@
       }
 
       &:last-child {
+        margin-left: auto; // keep theme toggle pinned to the far right
+
         a {
           margin-right: 0;
         }

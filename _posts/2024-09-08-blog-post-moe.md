@@ -1,11 +1,9 @@
 ---
-title: 'Blog Post number 4'
-date: 20-08-14
-permalink: /posts/2012/08/blog-post-4/
+title: 'Mixture of Experts'
+date:  2024-09-08
+permalink: /posts/2024/09/blog-post-moe/
 tags:
-  - cool posts
-  - category1
-  - category2
+  - MoE
 ---
 
 This is a sample blog post. Lorem ipsum I can't remember the rest of lorem ipsum and don't have an internet connection right now. Testing testing testing this blog post. Blog posts are cool.

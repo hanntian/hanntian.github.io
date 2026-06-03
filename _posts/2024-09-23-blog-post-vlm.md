@@ -1,11 +1,9 @@
 ---
-title: 'Future Blog Post'
-date: 2199-01-01
-permalink: /posts/2012/08/blog-post-4/
+title: 'Vision and Language Model'
+date:  2024-09-23
+permalink: /posts/2024/09/blog-post-vlm/
 tags:
-  - cool posts
-  - category1
-  - category2
+  - MoE
 ---
 
 This post will show up by default. To disable scheduling of future posts, edit `config.yml` and set `future: false`. 

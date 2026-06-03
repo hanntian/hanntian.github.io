@@ -2,21 +2,24 @@
 title: 'Transformer Series (1) - Byte-pair Encoding'
 date: 2024-08-14
 permalink: /posts/2024/08/blog-post-bpe/
+excerpt: |
+  🐿️ **TL;DR**
+
+  1. Represent arbitrary (Unicode) strings as a sequence of bytes
+  2. Train a BPE tokenizer on this byte sequence.
+  3. Use this tokenizer to encode text (a string) into tokens (a sequence of integers) for language modeling.
 tags:
-  - Basics
+  - Tokenizer
   - Transformer
 ---
-BPE tokenizer Training
-======
-# BPE
 
-<aside>
-🐿️
+<div class="notice--info" markdown="1">
+🐿️ **TL;DR**
 
 1. Represent arbitrary (Unicode) strings as a sequence of bytes
 2. Train a BPE tokenizer on this byte sequence. 
 3. Use this tokenizer to encode text (a string) into tokens (a sequence of integers) for language modeling.
-</aside>
+</div>
 
 # 1. Unicode and UTF-8
 
@@ -199,7 +202,7 @@ Merge: Every occurrence of this most frequent pair (“A”, “B”) is then me
 
 Input:
     -token_freqs: A dictionary mapping token sequences to their frequencies.
-                  Example:{{(b'byte1', b'byte2', ...): frequency, ...}
+                  Example:{% raw %}{{(b'byte1', b'byte2', ...): frequency, ...}{% endraw %}
 		-vocab_size: The target vocabulary size.
 		-vocab:The initialized vocabulary.
 		-next_id:The next available token ID.
@@ -251,7 +254,7 @@ Let’s focus on the code efficiency,
 
 I use profiling tools(cProfile) to identify the bottlenecks.
 
-![img/image.png](BPE/image.png)
+![profiling result](/images/bpe.png)
 
 **Problem**: The profiler shows that the main bottleneck is inside the merge loop, not file reading or multiprocessing pretokenization. Most time is spent on repeatedly calling `max`, `dict.get`, `len`, which suggests that the implementation scans the entire pair frequency dictionary in every merge iteration. 
 
@@ -263,4 +266,5 @@ best_pair = max(pair_counts.items(), key=lambda x: (x[1], x[0]))[0]
 
 **Solution:** To improve performance, we should avoid recomputing the most frequent pair from scratch each time. Instead, we can maintain a dynamic max frequency structure, such as a priority queue, and update only the pairs affected by each merge.
 
-So we can use **max** **heap + lazy deletion (as heap doesn’t support effective random update),** and the core idea is: 每次 pair 的频率变化时，不删除旧记录，而是直接 push 一条新记录进去。之后取最高频 pair 的时候，检查 heap 顶部是不是过期的。如果 heap 里面弹出来的是旧记录，比如 heap 里是 120，但 `pair_freqs[pair]` 现在已经是 80，那它就是 stale entry，直接丢掉，继续 pop。
+So we can use **max** **heap + lazy deletion (as heap doesn’t support effective random update),** and the core idea is: 
+Every time a pair's frequency changes, instead of removing the old record, we directly push a new record in. Later, when retrieving the highest-frequency pair, we check whether the top of the heap is expired. If the record popped from the heap is an old one—for example, the heap shows 120 but `pair_freqs[pair]` is already 80—then it is a stale entry, so we just discard it and keep popping.

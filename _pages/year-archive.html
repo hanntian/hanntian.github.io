@@ -8,12 +8,44 @@ redirect_from:
 ---
 
 {% include base_path %}
+
+<nav class="post-timeline" aria-label="Post timeline">
+  <div class="post-timeline__title">Timeline</div>
+  <ul class="post-timeline__list">
+    {% assign tl_year = 'None' %}
+    {% for post in site.posts %}
+      {% capture year %}{{ post.date | date: '%Y' }}{% endcapture %}
+      {% capture month %}{{ post.date | date: '%b' }}{% endcapture %}
+      {% capture ym %}{{ post.date | date: '%Y-%m' }}{% endcapture %}
+      {% if year != tl_year %}
+        {% unless tl_year == 'None' %}</ul></li>{% endunless %}
+        <li class="post-timeline__year">
+          <a href="#{{ year | slugify }}"><span class="post-timeline__dot"></span>{{ year }}</a>
+          <ul class="post-timeline__months">
+        {% assign tl_year = year %}
+        {% assign tl_ym = '' %}
+      {% endif %}
+      {% if ym != tl_ym %}
+        <li><a href="#{{ ym }}">{{ month }}</a></li>
+        {% assign tl_ym = ym %}
+      {% endif %}
+    {% endfor %}
+    {% unless tl_year == 'None' %}</ul></li>{% endunless %}
+  </ul>
+</nav>
+
 {% capture written_year %}'None'{% endcapture %}
+{% capture written_ym %}''{% endcapture %}
 {% for post in site.posts %}
   {% capture year %}{{ post.date | date: '%Y' }}{% endcapture %}
+  {% capture ym %}{{ post.date | date: '%Y-%m' }}{% endcapture %}
   {% if year != written_year %}
     <h2 id="{{ year | slugify }}" class="archive__subtitle">{{ year }}</h2>
     {% capture written_year %}{{ year }}{% endcapture %}
+  {% endif %}
+  {% if ym != written_ym %}
+    <h3 id="{{ ym }}" class="archive__submonth">{{ post.date | date: '%B' }}</h3>
+    {% capture written_ym %}{{ ym }}{% endcapture %}
   {% endif %}
   {% include archive-single.html %}
 {% endfor %}
