@@ -11,6 +11,7 @@ excerpt: |
 tags:
   - Tokenizer
   - Transformer
+toc: true
 ---
 
 <div class="notice--info" markdown="1">
@@ -20,6 +21,14 @@ tags:
 2. Train a BPE tokenizer on this byte sequence. 
 3. Use this tokenizer to encode text (a string) into tokens (a sequence of integers) for language modeling.
 </div>
+
+<aside class="sidebar__right" markdown="1">
+<nav class="toc" markdown="1">
+<header><h4 class="nav__title"><i class="fa fa-file-text"></i> Contents</h4></header>
+* TOC
+{:toc .toc__menu}
+</nav>
+</aside>
 
 # 1. Unicode and UTF-8
 
@@ -70,13 +79,13 @@ UTF-8 encodes each Unicode code point using 1 to 4 bytes, depending on its code 
 
 Character: **`你`**
 
-Unicode code point: `**U+4F60**`
+Unicode code point: **`U+4F60`**
 
 Binary representation: `0100 1111 0110 0000`
 
 This code point falls into the **3 byte UTF-8 format**: `1110xxxx 10xxxxxx 10xxxxxx`
 
-Fill the bits into the format: `1110 0100` | `10 111101` | `10 100000`
+Fill the bits into the format: `1110 0100` \| `10 111101` \| `10 100000`
 
 Final UTF-8 encoding:  `11100100 10111101 10100000` = `E4 BD A0`
 
@@ -90,7 +99,7 @@ Final UTF-8 encoding:  `11100100 10111101 10100000` = `E4 BD A0`
 
 **Unicode character → Bytes**. Converts Unicode numbers into binary storage. 
 
-For UTF-8, *****English (ASCII): 1 byte; Most Chinese: 3 bytes; Emojis: 4 bytes*
+For UTF-8, *English (ASCII): 1 byte; Most Chinese: 3 bytes; Emojis: 4 bytes*
 
 # 2 Subword Tokenization
 
@@ -187,7 +196,7 @@ Output:
 
 First, chunk the corpus while ensuring the chunk boundaries occur at the beginning of a special token. Second, respectively counting with the built-in library multiprocessing.
 
-Code:https://github.com/hanntian/assignment1-basics/blob/06add0d164c797ca1e1b7a84e1a1f54cea669fd2/cs336_basics/pretokenization_example.py#L71
+Code: Please see [here](https://github.com/hanntian/assignment1-basics/blob/06add0d164c797ca1e1b7a84e1a1f54cea669fd2/cs336_basics/pretokenization_example.py#L71)
 
 ## **3.3** Step three: Compute BPE merges
 
@@ -219,7 +228,7 @@ Since the only pair counts that change after each merge are those that overlap w
 
 Note that the merging part is not parallelizable, since we need best pair in entire token_freqs, and every iteration depends on last time.
 
-Code: https://github.com/hanntian/assignment1-basics/blob/06add0d164c797ca1e1b7a84e1a1f54cea669fd2/tests/adapters.py#L576 Lin
+Code: Please see [here](https://github.com/hanntian/assignment1-basics/blob/06add0d164c797ca1e1b7a84e1a1f54cea669fd2/tests/adapters.py#L576 Lin)
 
 # 3 BPE Tokenizer: Encoding and Decoding
 
@@ -237,7 +246,7 @@ The process of encoding text by BPE mirrors how we train the BPE vocabulary.
 - Look up each resulting token in the vocabulary to obtain its corresponding index.
 - Repeat this process for all pretokens, and concatenate all token indices into a single list.
 
-Code:https://github.com/hanntian/assignment1-basics/blob/06add0d164c797ca1e1b7a84e1a1f54cea669fd2/cs336_basics/tokenizer.py#L41
+Code: Please see [here](https://github.com/hanntian/assignment1-basics/blob/06add0d164c797ca1e1b7a84e1a1f54cea669fd2/cs336_basics/tokenizer.py#L41)
 
 ## 3.2 Decoding text
 

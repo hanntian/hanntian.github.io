@@ -3,6 +3,19 @@
 <a href="/sitemap/">Sitemap</a>
 
 <!-- Support for MatJax -->
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  };
+</script>
 <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script"></script>
 
@@ -12,5 +25,59 @@
     mermaid.initialize({startOnLoad:true, theme:'default'});
     await mermaid.run({querySelector:'code.language-mermaid'});
 </script>
+
+<!-- Right floating TOC: fixed width + sticky (theme width vars are `auto`) -->
+<style>
+  @media (min-width: 925px) {
+    /* Post pages: no left author sidebar -> content uses the full width */
+    .post-layout .page {
+      width: 100% !important;
+      margin: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      float: none !important;
+    }
+    /* Posts WITH a table of contents: two-column (left TOC + right body).
+       One shared left gutter so title and body line up exactly. */
+    .post-layout.has-toc .page__inner-wrap {
+      position: relative;
+      padding-left: 17em;
+    }
+    .post-layout.has-toc .page__inner-wrap > header,
+    .post-layout.has-toc .page__content { padding-left: 0; position: static; }
+    /* TOC sits in the left gutter; body never wraps under it */
+    .post-layout.has-toc .sidebar__right {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 15em;
+      margin: 0;
+      float: none;
+    }
+  }
+  /* Left TOC: clean index, original heading text (no all-caps), small font */
+  .toc { text-transform: none; letter-spacing: normal; }
+  .toc .nav__title { font-size: 0.8rem; text-transform: none; letter-spacing: normal; }
+  .toc .toc__menu a { font-size: 0.72rem; line-height: 1.4; padding: 0.35rem 0.8rem; }
+  .toc .toc__menu li ul > li a { padding-left: 1.6rem; font-size: 0.68rem; }
+
+  /* More compact post text for laptop screens (Notion-like density) */
+  .page__content { font-size: 16px; line-height: 1.5; }
+  .page__content p,
+  .page__content li { margin-bottom: 0.8em; }
+  .page__content li { margin-top: 0.2em; }
+  .post-layout .page__title { font-size: 2em; }
+  .page__content h1 { font-size: 1.4em; }
+  .page__content h2 { font-size: 1.25em; }
+  .page__content h3 { font-size: 1.1em; }
+  .page__content h4 { font-size: 1em; }
+
+  /* Tighter spacing between headings and surrounding text */
+  .page__content h1, .page__content h2, .page__content h3,
+  .page__content h4, .page__content h5, .page__content h6 {
+    margin-top: 1.2em;
+    margin-bottom: 0.4em;
+  }
+</style>
 
 <!-- end custom footer snippets -->
