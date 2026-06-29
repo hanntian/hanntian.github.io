@@ -1,6 +1,6 @@
 ---
 title: 'Vision and Language Model'
-date:  2024-09-23
+date:  2024-11-25
 permalink: /posts/2024/09/blog-post-vlm/
 tags:
   - MoE

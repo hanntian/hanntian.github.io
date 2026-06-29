@@ -80,4 +80,57 @@
   }
 </style>
 
+<!-- Global image handling: size + Notion-style caption -> figcaption -->
+<style>
+  /* Fit every in-content image to the column, cap its size, center it */
+  .page__content img {
+    display: block;
+    max-width: min(100%, 720px);
+    max-height: 75vh;
+    width: auto;
+    height: auto;
+    margin: 1.2em auto;
+  }
+  /* Auto-built figures from the Notion "image + duplicated caption" pattern */
+  .page__content .auto-figure { margin: 1.5em auto; text-align: center; max-width: 720px; }
+  .page__content .auto-figure img { margin: 0 auto; }
+  .page__content .auto-figure figcaption {
+    margin-top: 0.5em;
+    font-size: 0.82em;
+    line-height: 1.5;
+    color: var(--global-text-color-light, #6f777d);
+  }
+</style>
+<script>
+  /* Runs synchronously (before deferred MathJax) so any math inside captions
+     is typeset normally after this restructuring. */
+  (function () {
+    var content = document.querySelector('.page__content');
+    if (!content) return;
+    var imgs = Array.prototype.slice.call(content.querySelectorAll('img'));
+    imgs.forEach(function (img) {
+      if (img.closest('figure')) return;            // already a manual <figure>
+      var p = img.parentElement;
+      if (!p) return;
+      var alt = (img.getAttribute('alt') || '').replace(/\s+/g, ' ').trim();
+      if (!alt || alt.toLowerCase() === 'image.png') return;
+      var next = p.nextElementSibling;
+      if (!next) return;
+      // Notion captions land as a <p>, or — when indented — as a <pre> code block.
+      if (next.tagName !== 'P' && next.tagName !== 'PRE') return;
+      var ntext = (next.textContent || '').replace(/\s+/g, ' ').trim();
+      if (ntext !== alt) return;                     // only the duplicate-caption case
+      var fig = document.createElement('figure');
+      fig.className = 'auto-figure';
+      p.parentNode.insertBefore(fig, p);
+      fig.appendChild(img);                          // move image into the figure
+      var cap = document.createElement('figcaption');
+      cap.textContent = alt;                         // clean text; any $...$ is typeset by MathJax
+      fig.appendChild(cap);
+      next.parentNode.removeChild(next);             // drop the duplicate paragraph / code block
+      if (p.children.length === 0 && p.textContent.trim() === '') p.parentNode.removeChild(p);
+    });
+  })();
+</script>
+
 <!-- end custom footer snippets -->
