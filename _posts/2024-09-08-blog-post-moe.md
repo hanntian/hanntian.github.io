@@ -1,5 +1,5 @@
 ---
-title: 'Mixture of Experts'
+title: 'Transformer Series (4) - Mixture of Experts'
 date:  2024-09-08
 permalink: /posts/2024/09/blog-post-moe/
 tags:

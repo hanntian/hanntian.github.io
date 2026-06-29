@@ -45,6 +45,14 @@ layout: default
       {% endunless %}
 
       <section class="page__content" itemprop="text">
+        {% if page.toc %}
+        <aside class="sidebar__right">
+          <nav class="toc">
+            <header><h4 class="nav__title"><i class="fa fa-file-text"></i> {{ site.data.ui-text[site.locale].toc_label | default: "Contents" }}</h4></header>
+            <ul class="toc__menu" id="auto-toc-menu"></ul>
+          </nav>
+        </aside>
+        {% endif %}
         {{ content }}
 
         {% if page.citation and page.paperurl and page.slidesurl and page.bibtexurl %}
@@ -107,3 +115,41 @@ layout: default
     </div>
   {% endif %}
 </div>
+
+{% if page.toc %}
+<script>
+(function () {
+  function buildToc() {
+    var content = document.querySelector('.page__content');
+    var menu = document.getElementById('auto-toc-menu');
+    if (!content || !menu || menu.children.length) return;
+    var headers = content.querySelectorAll('h1, h2, h3');
+    if (!headers.length) { var a = document.querySelector('.sidebar__right'); if (a) a.style.display = 'none'; return; }
+    var stack = [{ level: 0, ul: menu }];
+    headers.forEach(function (h) {
+      if (h.closest('.toc')) return;
+      var level = parseInt(h.tagName.substring(1), 10);
+      if (!h.id) {
+        h.id = h.textContent.trim().toLowerCase().replace(/[^\w一-龥]+/g, '-').replace(/^-+|-+$/g, '');
+      }
+      while (stack.length > 1 && stack[stack.length - 1].level >= level) stack.pop();
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent;
+      li.appendChild(a);
+      stack[stack.length - 1].ul.appendChild(li);
+      var ul = document.createElement('ul');
+      li.appendChild(ul);
+      stack.push({ level: level, ul: ul });
+    });
+    menu.querySelectorAll('ul').forEach(function (ul) { if (!ul.children.length) ul.remove(); });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', buildToc);
+  } else {
+    buildToc();
+  }
+})();
+</script>
+{% endif %}

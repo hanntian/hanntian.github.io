@@ -22,14 +22,6 @@ toc: true
 3. Use this tokenizer to encode text (a string) into tokens (a sequence of integers) for language modeling.
 </div>
 
-<aside class="sidebar__right" markdown="1">
-<nav class="toc" markdown="1">
-<header><h4 class="nav__title"><i class="fa fa-file-text"></i> Contents</h4></header>
-* TOC
-{:toc .toc__menu}
-</nav>
-</aside>
-
 # 1. Unicode and UTF-8
 
 ## 1.1 Unicode

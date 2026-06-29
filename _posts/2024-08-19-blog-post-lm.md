@@ -23,14 +23,6 @@ toc: true
 
 </div>
 
-<aside class="sidebar__right" markdown="1">
-<nav class="toc" markdown="1">
-<header><h4 class="nav__title"><i class="fa fa-file-text"></i> Contents</h4></header>
-* TOC
-{:toc .toc__menu}
-</nav>
-</aside>
-
 # 1 Transformer LM
 
 Through BPE, now we have a sequence of token IDs from input text(i.e., torch.Tensor of shape (batch_size, sequence_length)). 
