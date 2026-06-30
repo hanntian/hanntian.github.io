@@ -1,7 +1,7 @@
 ---
 title: 'RL Series (1) - Policy Gradient'
 date:  2024-10-03
-permalink: /posts/2024/09/blog-post-policy-gradient/
+permalink: /posts/2024/10/blog-post-policy-gradient/
 tags:
   - Reinforcement Learning
   - RL
