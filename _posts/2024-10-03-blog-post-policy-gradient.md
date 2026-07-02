@@ -95,7 +95,11 @@ $$
 
 # 2 Policy Gradient
 
-The objective of the agent is to maximize the expected return $\bar{R}_\theta$. To this end, we compute the gradient of $\bar{R}_\theta$: $\nabla \bar{R}_\theta = ？$
+The objective of the agent is to maximize the expected return $\bar{R}_\theta$. To this end, we compute its gradient:
+
+$$
+\nabla \bar{R}_\theta = ?
+$$
 
 <figure class="align-center" style="max-width: 680px;">
   <img src="/images/Policy%20Gradient/image%204.png" alt="Figure 5: $T_n$ represents the length (total time steps) of the $n$-th trajectory/episode.">
@@ -107,9 +111,12 @@ Note that, $p_\theta$ is same with $\pi_\theta$ which both means the probability
 Part deviation of above equation:
 
 $$
-\log p_\theta(\tau) = \log p(s_1) + \sum_{t=1}^T \log p_\theta(a_t|s_t) + \sum_{t=1}^T \log p(s_{t+1}|s_t, a_t) \\ \nabla \log p_\theta(\tau) = \nabla \log p(s_1) + \sum_{t=1}^T \nabla \log p_\theta(a_t|s_t) + \sum_{t=1}^T \nabla \log p(s_{t+1}|s_t, a_t) \\ since \ \nabla \log p(s_1) = 0 ,\ \nabla \log p(s_{t+1}|s_t, a_t) = 0 \\
-so, \nabla \log p_\theta(\tau) = \sum_{t=1}^T \nabla \log p_\theta(a_t|s_t)
-
+\begin{aligned}
+\log p_\theta(\tau) &= \log p(s_1) + \sum_{t=1}^T \log p_\theta(a_t|s_t) + \sum_{t=1}^T \log p(s_{t+1}|s_t, a_t) \\
+\nabla \log p_\theta(\tau) &= \nabla \log p(s_1) + \sum_{t=1}^T \nabla \log p_\theta(a_t|s_t) + \sum_{t=1}^T \nabla \log p(s_{t+1}|s_t, a_t) \\
+&\text{since } \nabla \log p(s_1) = 0,\ \nabla \log p(s_{t+1}|s_t, a_t) = 0 \\
+\text{so,}\ \nabla \log p_\theta(\tau) &= \sum_{t=1}^T \nabla \log p_\theta(a_t|s_t)
+\end{aligned}
 $$
 
 Intuition here:
