@@ -78,7 +78,7 @@ At what point **$\theta$** has **drifted too far**, signaling that we must stop 
 
 # 4 PPO
 
-**答案就是 PPO(2017)。** PPO 做的就是把这个"什么时候停"从"凭感觉"变成"写进目标函数里强制约束":
+**答案就是 PPO(2017)。** PPO 做的就是把这个"什么时候停"写进目标函数里强制约束。
 
 ## 4.1 **PPO-penalty**
 
