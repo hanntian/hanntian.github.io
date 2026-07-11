@@ -1,5 +1,5 @@
 ---
-title: 'RL Series (2) - Proximal Policy Optimization(PPO)'
+title: 'RL Series (2) - Proximal Policy Optimization'
 date:  2024-10-05
 permalink: /posts/2024/10/blog-post-ppo/
 tags:
@@ -62,7 +62,7 @@ Let's examine the gradient update equation **in** the off-policy setting.
   <img src="/images/Proximal%20Policy%20Optimization%20(PPO)/c1383cdd-fab0-4766-8b57-12ac756c8c66.png" alt="Off-policy objective">
 </figure>
 
-Here, $f(x) = p_{\theta}(a_t|s_t)$ :
+Here, $f(x) = p_{\theta}(a_t \mid s_t)$ :
 
 $$
 \begin{aligned}
@@ -96,7 +96,7 @@ If $\text{KL}(\pi_{\theta^k} \parallel \pi_{\theta}) < \text{KL}_{min}$, decreas
 
 ## 4.2 PPO-clip
 
-**实际工程中最常用的主流版本**。直接对新旧策略的比率（Ratio）进行裁剪，从而彻底替代了复杂的 KL 惩罚。通过 CLIP 将 weight  $\frac{p_\theta(a_t|s_t)}{p_{\theta^k}(a_t|s_t)}$强行限制在 $[1-\varepsilon, 1+\varepsilon]$ 之间（通常 $\varepsilon = 0.2$），再与未裁剪的目标取 `min`。这样避免了复杂的自适应 KL 计算，实现更简单，训练更稳定高效。
+**实际工程中最常用的主流版本**。直接对新旧策略的比率（Ratio）进行裁剪，从而彻底替代了复杂的 KL 惩罚。通过 CLIP 将 weight  $\frac{p_\theta(a_t \mid s_t)}{p_{\theta^k}(a_t \mid s_t)}$ 强行限制在 $[1-\varepsilon, 1+\varepsilon]$ 之间（通常 $\varepsilon = 0.2$），再与未裁剪的目标取 `min`。这样避免了复杂的自适应 KL 计算，实现更简单，训练更稳定高效。
 
 $$
 J_{PPO2}^{\theta^k}(\theta) \approx \sum_{(s_t, a_t)} \min \left( \frac{p_\theta(a_t|s_t)}{p_{\theta'}(a_t|s_t)} A^{\theta^k}(s_t, a_t), \, \text{clip}\left(\frac{p_\theta(a_t|s_t)}{p_{\theta'}(a_t|s_t)}, 1 - \varepsilon, 1 + \varepsilon\right) A^{\theta^k}(s_t, a_t) \right)
