@@ -6,7 +6,7 @@ tags:
   - Attention
   - Transformer
 excerpt: |
-  🔥 **TL;DR**
+  🐿️ **TL;DR**
 
   1. Attention Complexity
   2. Way to Speedup Attention 
@@ -14,7 +14,7 @@ toc: true
 ---
 
 <div class="notice--info" markdown="1">
-🔥 **TL;DR**
+🐿️ **TL;DR**
 
 1. Attention Complexity
 2. Way to Speedup Attention 
