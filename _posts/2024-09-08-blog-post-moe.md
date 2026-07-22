@@ -4,6 +4,7 @@ date:  2024-09-08
 permalink: /posts/2024/09/blog-post-moe/
 tags:
   - MoE
+  - LLM
 ---
 
 This is a sample blog post. Lorem ipsum I can't remember the rest of lorem ipsum and don't have an internet connection right now. Testing testing testing this blog post. Blog posts are cool.

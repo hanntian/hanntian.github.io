@@ -5,6 +5,7 @@ permalink: /posts/2024/08/blog-post-attention/
 tags:
   - Attention
   - Transformer
+  - LLM
 excerpt: |
   🐿️ **TL;DR**
 
