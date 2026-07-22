@@ -9,9 +9,7 @@ tags:
 excerpt: |
   🐝 **TL;DR**
 
-  Self-supervised learning (SSL) allows models to automatically learn a "good" representation space using the data in a given dataset without the need for their labels. Specifically, if our dataset were a bunch of images, then self-supervised learning allows a model to learn and generate a "good" representation vector for images.
-
-  **Timeline** : Pretext Tasks → Contrastive Learning → Self-Distillation → **Renaissance (MAE)**
+  Self-supervised learning (SSL) allows models to automatically learn a "good" representation space using the data in a given dataset without the need for their labels. Specifically, if our dataset were a bunch of images, then self-supervised learning allows a model to learn and generate a "good" representation vector for images. Historically, SSL has evolved through four key eras: Pretext Tasks $\rightarrow$ Contrastive Learning $\rightarrow$ Self-Distillation $\rightarrow$ Masked Autoencoding (MAE Renaissance).
 toc: true
 ---
 <div class="notice--info" markdown="1">
@@ -26,17 +24,17 @@ toc: true
 
 **From AlexNet to Self-Supervised Learning**: AlexNet (2012) → people found the penultimate *4096-dim vector* transfers well to new tasks (*DeCAF*, 2014; *CNN Features off-the-shelf*, 2014) → *the representation is the real prize, and it's reusable,* but this still relies on *labeled* ImageNet pretraining → so the question became: *can we drop the labels from pretraining too?* → *self-supervised learning* was born, aiming to(SSL’s final goal) **train an encoder** that rivals supervised ImageNet pretraining **without any labels**.
 
-![                                        Figure 1: AlexNet as a feature extractor](Self%20supervised%20learning/image.png)
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image.png" alt="Figure 1: AlexNet as a feature extractor">
+  <figcaption style="text-align: center;">Figure 1: AlexNet as a feature extractor</figcaption>
+</figure>
 
-                                        Figure 1: AlexNet as a feature extractor
-
-![Figure 2: The SSL paradigm — pretext pretraining on unlabeled data, then transfer to downstream tasks](Self%20supervised%20learning/image%201.png)
-
-Figure 2: The SSL paradigm — pretext pretraining on unlabeled data, then transfer to downstream tasks
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%201.png" alt="Figure 2: The SSL paradigm — pretext pretraining on unlabeled data, then transfer to downstream tasks">
+  <figcaption style="text-align: center;">Figure 2: The SSL paradigm — pretext pretraining on unlabeled data, then transfer to downstream tasks</figcaption>
+</figure>
 
 **How SSL evolved**: hand-crafted **pretext tasks** (Context Encoders, 2016; Colorization, 2016; Jigsaw, 2016; RotNet, 2018) → worked, but still trailed supervised pretraining → **contrastive learning** (CPC, 2018; MoCo, 2019; SimCLR, 2020) finally matched or beat supervised features → **self-distillation without negatives** (BYOL, 2020; SwAV, 2020; DINO, 2021) → **masked image modeling**, the "image BERT" idea (BEiT, 2021; MAE, 2021) → general-purpose **foundation encoders** (DINOv2, 2023; I-JEPA / V-JEPA, 2023–2024).
-
-[Details-SSL](https://app.notion.com/p/Details-SSL-39230cd0ce598035b5e8f57b44e9ae76?pvs=21)
 
 > 
 > 
@@ -56,9 +54,10 @@ Figure 2: The SSL paradigm — pretext pretraining on unlabeled data, then trans
 
 LeCun has a famous **cake analogy** (which he repeated often, ~2016–2019): **self-supervised learning is the cake itself** (the bulk, where most of the information is), **supervised learning is just the icing** on top, and **reinforcement learning is the cherry** on the cake. The point: most of what an intelligent system learns should come from unlabeled data, not from labels or rewards.
 
-![                            Figure 3: LeCun talk in **NIPS 2016**](Self%20supervised%20learning/image%202.png)
-
-                            Figure 3: LeCun talk in **NIPS 2016**
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%202.png" alt="Figure 3: LeCun talk in **NIPS 2016**">
+  <figcaption style="text-align: center;">Figure 3: LeCun talk in **NIPS 2016**</figcaption>
+</figure>
 
 # 1 Self-supervised pretext tasks
 
@@ -75,9 +74,10 @@ LeCun has a famous **cake analogy** (which he repeated often, ~2016–2019): **s
     
     Context Encoder (2016) is one of the foundational **early works** in self-supervised vision. It **proved that the direction of "masked prediction can learn transferable features" is viable, but in absolute numbers it still fell well short of supervised pretraining.**
     
-    ![                                    Figure 4: Context Encoder: encoder → bottleneck → decode](Self%20supervised%20learning/image%203.png)
-    
-                                        Figure 4: Context Encoder: encoder → bottleneck → decode
+    <figure class="align-center" style="max-width: 680px;">
+      <img src="/images/Self%20supervised%20learning/image%203.png" alt="Figure 4: Context Encoder: encoder → bottleneck → decode">
+      <figcaption style="text-align: center;">Figure 4: Context Encoder: encoder → bottleneck → decode</figcaption>
+    </figure>
     
     **Input (far left):** An image with a white square hole cut out of the center — this is what the network receives.
     
@@ -97,9 +97,10 @@ LeCun has a famous **cake analogy** (which he repeated often, ~2016–2019): **s
     
     Next, let’s see the details of the $\mathcal{L}(\cdot,\cdot)$.
     
-    ![                                            Figure 5: Loss in Context Encoder](Self%20supervised%20learning/image%204.png)
-    
-                                                Figure 5: Loss in Context Encoder
+    <figure class="align-center" style="max-width: 680px;">
+      <img src="/images/Self%20supervised%20learning/image%204.png" alt="Figure 5: Loss in Context Encoder">
+      <figcaption style="text-align: center;">Figure 5: Loss in Context Encoder</figcaption>
+    </figure>
     
     Reconstruction loss(  $L₂$ ) ensures pixel alignment, but the generated regions tend to be blurry. To achieve sharp texture details, the authors introduce the concept of GANs.
     
@@ -112,21 +113,24 @@ LeCun has a famous **cake analogy** (which he repeated often, ~2016–2019): **s
     
 - More details about Split-brain Autoencoder([Zhang et al., 2017](https://arxiv.org/pdf/1611.09842)).
     
-    ![                                                       Figure 6: Color a/b Generation](Self%20supervised%20learning/image%205.png)
-    
-                                                           Figure 6: Color a/b Generation
+    <figure class="align-center" style="max-width: 680px;">
+      <img src="/images/Self%20supervised%20learning/image%205.png" alt="Figure 6: Color a/b Generation">
+      <figcaption style="text-align: center;">Figure 6: Color a/b Generation</figcaption>
+    </figure>
     
     If the overall network $\mathcal{F}$ is a standard CNN (e.g., AlexNet), the subnetworks $\mathcal{F}_1$ and $\mathcal{F}_2$ are obtained by splitting each layer in half along the channel dimension. In implementation, this is equivalent to using grouped convolution with `groups=2`. 
     
     In aggregate, $\mathcal{F}_1$ and $\mathcal{F}_2$ are essentially convolutional encoder networks that each handle half of the channel dimension, called "cross-channel encoders".
     
-    ![                                                          Figure 7: Split-brain Autoencoder (1)](Self%20supervised%20learning/b53c6893-edfd-48a5-b2cc-aa09f3b4eee2.png)
+    <figure class="align-center" style="max-width: 680px;">
+      <img src="/images/Self%20supervised%20learning/b53c6893-edfd-48a5-b2cc-aa09f3b4eee2.png" alt="Figure 7: Split-brain Autoencoder (1)">
+      <figcaption style="text-align: center;">Figure 7: Split-brain Autoencoder (1)</figcaption>
+    </figure>
     
-                                                              Figure 7: Split-brain Autoencoder (1)
-    
-    ![                                                            Figure 8: Split-brain Autoencoder (2)](Self%20supervised%20learning/image%206.png)
-    
-                                                                Figure 8: Split-brain Autoencoder (2)
+    <figure class="align-center" style="max-width: 680px;">
+      <img src="/images/Self%20supervised%20learning/image%206.png" alt="Figure 8: Split-brain Autoencoder (2)">
+      <figcaption style="text-align: center;">Figure 8: Split-brain Autoencoder (2)</figcaption>
+    </figure>
     
 
 # 2 Contrastive Representation Learning
@@ -161,9 +165,10 @@ Again, InfoNCE is just one mathematical formalization of contrastive learning, n
 
 ### 2.1.1 InfoNCE v.s. Cross entropy loss
 
-![                  Figure 9: InfoNCE loss is actually N-way cross entropy loss!](Self%20supervised%20learning/image%207.png)
-
-                  Figure 9: InfoNCE loss is actually N-way cross entropy loss!
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%207.png" alt="Figure 9: InfoNCE loss is actually N-way cross entropy loss!">
+  <figcaption style="text-align: center;">Figure 9: InfoNCE loss is actually N-way cross entropy loss!</figcaption>
+</figure>
 
 with $f(·)$ means encoder we want to learn which maps sample into feature embedding, and $s(a,b)$ means similarity score.  
 
@@ -195,9 +200,10 @@ $$
 
 ### 2.1.2 InfoNCE lower bound
 
-![                      Figure 10: InfoNCE loss and its mutual information lower bound](Self%20supervised%20learning/image%208.png)
-
-                      Figure 10: InfoNCE loss and its mutual information lower bound
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%208.png" alt="Figure 10: InfoNCE loss and its mutual information lower bound">
+  <figcaption style="text-align: center;">Figure 10: InfoNCE loss and its mutual information lower bound</figcaption>
+</figure>
 
 - Detailed Derivation
     
@@ -251,13 +257,10 @@ $$
 
 Give the model the first half of a sequence and let it guess what comes next. If it guesses right, it learns.The fundamental breakthrough of CPC is that it frames the self-supervised task of predicting the future as a contrastive matching problem like a multiple-choice question instead of a generative regression task requiring direct reconstruction. This approach effectively bypasses the immense difficulty of generating high-dimensional raw signals while still forcing the model to learn highly useful, high-level representations.
 
-![                        Figure 11: Instance-Level vs. Sequence-Level Learning
-Instance-level learning, such as contrastive learning via data augmentation, answers the core question: "Are these two images different views of the same object?" It creates positive samples through data augmentation on a single instance to capture invariant features, essentially learning what things look like the same entity. 
-In contrast, sequence-level learning like CPC answers the question: "Given the preceding sequence, what should come next?" It leverages temporal succession to create positive samples, where the true future segment is positive and random segments are negative, allowing the model to capture temporal dynamics and learn how sequences evolve over time.](Self%20supervised%20learning/image%209.png)
-
-                        Figure 11: Instance-Level vs. Sequence-Level Learning
-Instance-level learning, such as contrastive learning via data augmentation, answers the core question: "Are these two images different views of the same object?" It creates positive samples through data augmentation on a single instance to capture invariant features, essentially learning what things look like the same entity. 
-In contrast, sequence-level learning like CPC answers the question: "Given the preceding sequence, what should come next?" It leverages temporal succession to create positive samples, where the true future segment is positive and random segments are negative, allowing the model to capture temporal dynamics and learn how sequences evolve over time.
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%209.png" alt="Figure 11: Instance-Level vs. Sequence-Level Learning Instance-level learning, such as contrastive learning via data augmentation, answers the core question: &quot;Are these two images different views of the same object?&quot; It creates positive samples through data augmentation on a single instance to capture invariant features, essentially learning what things look like the same entity. In contrast, sequence-level learning like CPC answers the question: &quot;Given the preceding sequence, what should come next?&quot; It leverages temporal succession to create positive samples, where the true future segment is positive and random segments are negative, allowing the model to capture temporal dynamics and learn how sequences evolve over time.">
+  <figcaption style="text-align: center;">Figure 11: Instance-Level vs. Sequence-Level Learning Instance-level learning, such as contrastive learning via data augmentation, answers the core question: "Are these two images different views of the same object?" It creates positive samples through data augmentation on a single instance to capture invariant features, essentially learning what things look like the same entity. In contrast, sequence-level learning like CPC answers the question: "Given the preceding sequence, what should come next?" It leverages temporal succession to create positive samples, where the true future segment is positive and random segments are negative, allowing the model to capture temporal dynamics and learn how sequences evolve over time.</figcaption>
+</figure>
 
 The following is CPC core workflow:
 
@@ -302,9 +305,10 @@ $$
 
 • **Goal**: Identify the true future sample out of the noise.
 
-![                               Figure 12: Workflow of Contrastive Predictive Coding(CPC)](Self%20supervised%20learning/image%2010.png)
-
-                               Figure 12: Workflow of Contrastive Predictive Coding(CPC)
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2010.png" alt="Figure 12: Workflow of Contrastive Predictive Coding(CPC)">
+  <figcaption style="text-align: center;">Figure 12: Workflow of Contrastive Predictive Coding(CPC)</figcaption>
+</figure>
 
 ## 2.3 SimCLR: A Simple Framework for Contrastive Learning
 
@@ -314,7 +318,9 @@ The base encoder 𝑓 extracts representation vectors for the augmented samples.
 
 The projection head 𝑔 is a small neural network that maps the representation vectors $h_i$ and $h_𝑗$to the space where the contrastive loss is applied. The paper found that using a nonlinear projection head improved the representation quality of the layer before it. Specifically, they used a MLP with one hidden layer as the projection head 𝑔. The contrastive loss is then computed based on the outputs $z_i = g(h_i)$ and $z_i = g(h_i)$.
 
-![image.png](Self%20supervised%20learning/image%2011.png)
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2011.png" alt="">
+</figure>
 
 After training is completed, we throw away the projection head $g$ and only use 𝑓 and the representation ℎ to perform downstream tasks, such as classification.
 
@@ -338,39 +344,43 @@ learning is applied. $g(·)$ is a 2-layer MLP, where the output is 128-dimension
         1. 用 h 能预测出施加的增强类型,用 z 不能 → 直接验证"信息丢在 z、留在 h"
         2. Fig. 2.4-1:Non-linear projection head 下的性能对 z 维度不敏感(32~2048 持平)→ 起作用的是非线性缓冲层本身,而非投影维度
 
-![                          Figure 13: Non-linear projection head improves linear evaluation 
-                                               top-1 by ~3% over linear and ~10% over no projection.](Self%20supervised%20learning/image%2012.png)
-
-                          Figure 13: Non-linear projection head improves linear evaluation 
-                                               top-1 by ~3% over linear and ~10% over no projection.
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2012.png" alt="Figure 13: Non-linear projection head improves linear evaluation top-1 by ~3% over linear and ~10% over no projection.">
+  <figcaption style="text-align: center;">Figure 13: Non-linear projection head improves linear evaluation top-1 by ~3% over linear and ~10% over no projection.</figcaption>
+</figure>
 
 - Generate positive samples through composition of data augmentations. SimCLR conducted a systematic ablation study and found that no single data augmentation is sufficient on its own; they must be combined. The most critical combination is **random crop + color distortion** (color jitter/grayscale).
 
-![Figure 14: Illustrations of the studied data augmentation operators. Each augmentation can transform data stochastically with some internal parameters (e.g. rotation degree, noise level).  Note that the paper only tested these operators in ablation, the augmentation policy used to train the models only includes random crop (with flip and resize), color distortion, and Gaussian blur.](Self%20supervised%20learning/image%2013.png)
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2013.png" alt="Figure 14: Illustrations of the studied data augmentation operators. Each augmentation can transform data stochastically with some internal parameters (e.g. rotation degree, noise level).  Note that the paper only tested these operators in ablation, the augmentation policy used to train the models only includes random crop (with flip and resize), color distortion, and Gaussian blur.">
+  <figcaption style="text-align: center;">Figure 14: Illustrations of the studied data augmentation operators. Each augmentation can transform data stochastically with some internal parameters (e.g. rotation degree, noise level).  Note that the paper only tested these operators in ablation, the augmentation policy used to train the models only includes random crop (with flip and resize), color distortion, and Gaussian blur.</figcaption>
+</figure>
 
-Figure 14: Illustrations of the studied data augmentation operators. Each augmentation can transform data stochastically with some internal parameters (e.g. rotation degree, noise level).  Note that the paper only tested these operators in ablation, the augmentation policy used to train the models only includes random crop (with flip and resize), color distortion, and Gaussian blur.
-
-![Figure 15: Linear evaluation (ImageNet top-1 accuracy) under individual or composition of data augmentations, applied only to one branch. For all columns but the last, diagonal entries correspond to single transformation, and off-diagonals correspond to composition of two transformations (applied sequentially). The last column reflects the average over the row.](Self%20supervised%20learning/image%2014.png)
-
-Figure 15: Linear evaluation (ImageNet top-1 accuracy) under individual or composition of data augmentations, applied only to one branch. For all columns but the last, diagonal entries correspond to single transformation, and off-diagonals correspond to composition of two transformations (applied sequentially). The last column reflects the average over the row.
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2014.png" alt="Figure 15: Linear evaluation (ImageNet top-1 accuracy) under individual or composition of data augmentations, applied only to one branch. For all columns but the last, diagonal entries correspond to single transformation, and off-diagonals correspond to composition of two transformations (applied sequentially). The last column reflects the average over the row.">
+  <figcaption style="text-align: center;">Figure 15: Linear evaluation (ImageNet top-1 accuracy) under individual or composition of data augmentations, applied only to one branch. For all columns but the last, diagonal entries correspond to single transformation, and off-diagonals correspond to composition of two transformations (applied sequentially). The last column reflects the average over the row.</figcaption>
+</figure>
 
 - **Use large batch size.** For example, a batch size of 4096 provides $2N = 8192$ augmented images per step, offering a large number of in-batch negative samples.
 
-![                               Figure 16: Why does large batch size work?](Self%20supervised%20learning/image%2015.png)
-
-                               Figure 16: Why does large batch size work?
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2015.png" alt="Figure 16: Why does large batch size work?">
+  <figcaption style="text-align: center;">Figure 16: Why does large batch size work?</figcaption>
+</figure>
 
 In addition, using cosine similarity as the score function.
 
 ### 2.3.2 Implementation
 
-![        Figure 17: SimCLR mini-batch training — affinity matrix as a 2N-way classification problem](Self%20supervised%20learning/image%2016.png)
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2016.png" alt="Figure 17: SimCLR mini-batch training — affinity matrix as a 2N-way classification problem">
+  <figcaption style="text-align: center;">Figure 17: SimCLR mini-batch training — affinity matrix as a 2N-way classification problem</figcaption>
+</figure>
 
-        Figure 17: SimCLR mini-batch training — affinity matrix as a 2N-way classification problem
-
-![       Figure 18: SimCLR algorithm — positive pairs via augmentation, in-batch negatives via InfoNCE](Self%20supervised%20learning/image%2017.png)
-
-       Figure 18: SimCLR algorithm — positive pairs via augmentation, in-batch negatives via InfoNCE
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2017.png" alt="Figure 18: SimCLR algorithm — positive pairs via augmentation, in-batch negatives via InfoNCE">
+  <figcaption style="text-align: center;">Figure 18: SimCLR algorithm — positive pairs via augmentation, in-batch negatives via InfoNCE</figcaption>
+</figure>
 
 [Data Augmentation](https://github.com/during-gt/Assignment3/blob/2ff70922c19937ca9aa97ad088ca7112d5587c31/cs231n/simclr/data_utils.py#L7)→ [Base Encoder(ResNet) and Projection Head(MLP)](https://github.com/during-gt/Assignment3/blob/2ff70922c19937ca9aa97ad088ca7112d5587c31/cs231n/simclr/model.py#L7) → [Contrastive Loss](https://github.com/during-gt/Assignment3/blob/2ff70922c19937ca9aa97ad088ca7112d5587c31/cs231n/simclr/contrastive_loss.py#L123)
 
@@ -380,7 +390,9 @@ In addition, using cosine similarity as the score function.
 
 - **Queue as Past Negative Sample Pool** which decouples negative sample size from batch size. Specifically, using a FIFO queue (65,536 keys) accumulates encoded keys across iterations: the current batch is enqueued, the oldest batch dequeued. Negatives come from many past batches, not like SimCLR.
 
-![image.png](Self%20supervised%20learning/image%2018.png)
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2018.png" alt="">
+</figure>
 
 - **Momentum Encoder: Ensuring Representation Consistency**
     
@@ -400,9 +412,10 @@ In addition, using cosine similarity as the score function.
     
     MoCo shuffles the sample order across multiple GPUs before running the key encoder (and deshuffles afterward). This ensures that the query and its positive key are processed in different sub-batches, forcing the model to rely on semantic features rather than shared BN statistics.
     
-    ![                  Figure 19: MoCo's Shuffling BN ](Self%20supervised%20learning/image%2019.png)
-    
-                      Figure 19: MoCo's Shuffling BN 
+    <figure class="align-center" style="max-width: 680px;">
+      <img src="/images/Self%20supervised%20learning/image%2019.png" alt="Figure 19: MoCo's Shuffling BN">
+      <figcaption style="text-align: center;">Figure 19: MoCo's Shuffling BN</figcaption>
+    </figure>
     
     [More details](https://app.notion.com/p/More-details-39e30cd0ce5980988426fca385af466e?pvs=21)
     
@@ -411,9 +424,10 @@ In addition, using cosine similarity as the score function.
 
 ### 2.4.2 Implementation
 
-![                                            Figure 20: MoCo's learning algorithm (He et al., 2020) ](Self%20supervised%20learning/image%2020.png)
-
-                                            Figure 20: MoCo's learning algorithm (He et al., 2020) 
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2020.png" alt="Figure 20: MoCo's learning algorithm (He et al., 2020)">
+  <figcaption style="text-align: center;">Figure 20: MoCo's learning algorithm (He et al., 2020)</figcaption>
+</figure>
 
 ### 2.4.3 MoCo V2
 
@@ -423,11 +437,17 @@ A hybrid of ideas from SimCLR and MoCo:
 
 # 3 Summary of Contrastive Representation Learning
 
-![image.png](Self%20supervised%20learning/image%2021.png)
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2021.png" alt="">
+</figure>
 
-![image.png](Self%20supervised%20learning/2358c59b-8895-411e-a1ef-51d67f85e298.png)
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/2358c59b-8895-411e-a1ef-51d67f85e298.png" alt="">
+</figure>
 
-![image.png](Self%20supervised%20learning/01fcee83-b6d8-4821-96ea-7ce34e0ec2c9.png)
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/01fcee83-b6d8-4821-96ea-7ce34e0ec2c9.png" alt="">
+</figure>
 
 # 4 DINO: Self-Distillation with No Labels
 
@@ -435,9 +455,10 @@ Models trained with vanilla contrastive learning methods such as SimCLR require 
 
 DINO uses two separate encoders which are trained differently. The student network is updated via backpropagation to match the outputs of the teacher network. The teacher network is not updated via backpropagation; instead, its weights are updated using an exponential moving average (EMA) of the student's weights. This means that the teacher model evolves more slowly and provides a stable target for the student to learn from.
 
-![                                Figure 21: Core idea of DINO (Caron et al., 2021) ](Self%20supervised%20learning/image%2022.png)
-
-                                Figure 21: Core idea of DINO (Caron et al., 2021) 
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2022.png" alt="Figure 21: Core idea of DINO (Caron et al., 2021)">
+  <figcaption style="text-align: center;">Figure 21: Core idea of DINO (Caron et al., 2021)</figcaption>
+</figure>
 
 **💡 Why DINO is Called "Self-Distillation"？**
 
@@ -567,9 +588,10 @@ While **positive alignment** ("正对一致", the first half) is a universal obj
 
 In the original DINO paper, to make the pseudocode simpler and easier to read, the authors provided this basic version without multi-crop below. So, let’s go through this step by step.
 
-![                                                     Figure 22: DINO algorithm ](Self%20supervised%20learning/image%2023.png)
-
-                                                     Figure 22: DINO algorithm 
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2023.png" alt="Figure 22: DINO algorithm">
+  <figcaption style="text-align: center;">Figure 22: DINO algorithm</figcaption>
+</figure>
 
 **`gt.params = gs.params`** — The teacher is not pretrained; it starts from the same initialization as the student. It never receives gradients afterward, only passively tracks the student via EMA.
 
@@ -584,9 +606,10 @@ In the original DINO paper, to make the pseudocode simpler and easier to read, t
 类比监督学习：分类头输出维度也固定（如 ImageNet 的 1000），但那里每一维有预先绑定的语义（dim 3 = 鲨鱼）；DINO 的 65536 维没有任何预绑定语义，只是给了模型"最多可以用这么多个软聚类"的容量
 > 
 
-![  Figure 23: Projection head design ](Self%20supervised%20learning/image%2024.png)
-
-  Figure 23: Projection head design 
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2024.png" alt="Figure 23: Projection head design">
+  <figcaption style="text-align: center;">Figure 23: Projection head design</figcaption>
+</figure>
 
 **`loss = H(t1, s2)/2 + H(t2, s1)/2`** — Cross-entropy averaged over both directions. The information flow is fixed: **the teacher produces targets, the student learns to predict them**. This is "self-distillation" — no ground-truth labels; the teacher's output distribution serves as soft labels.
 
@@ -608,15 +631,17 @@ In the original DINO paper, to make the pseudocode simpler and easier to read, t
 
 Centering or sharpening alone leads to collapse——same output for every input; together they anchor the teacher's output in a sweet spot—neither one-hot nor uniform. This is DINO's most elegant design, and the paper's collapse study (see below) confirms that removing either causes collapse.
 
-![       Figure 24: Collapse study — either alone collapses (KL → 0)](Self%20supervised%20learning/image%2025.png)
-
-       Figure 24: Collapse study — either alone collapses (KL → 0)
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2025.png" alt="Figure 24: Collapse study — either alone collapses (KL → 0)">
+  <figcaption style="text-align: center;">Figure 24: Collapse study — either alone collapses (KL → 0)</figcaption>
+</figure>
 
 ---
 
-![                          Figure 25: DINO's collapse analysis](Self%20supervised%20learning/image%2026.png)
-
-                          Figure 25: DINO's collapse analysis
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2026.png" alt="Figure 25: DINO's collapse analysis">
+  <figcaption style="text-align: center;">Figure 25: DINO's collapse analysis</figcaption>
+</figure>
 
 In summary, a "good" representation requires the teacher's outputs to be sharp individually, yet flat overall:
 
@@ -719,18 +744,28 @@ student的必胜策略同样是无视输入、恒定输出均匀分布,loss到�
 
 Let's then dive into the work from famous Masked Auto Encoder(He et al., 2021).
 
-![image.png](Self%20supervised%20learning/image%2027.png)
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2027.png" alt="">
+</figure>
 
-![image.png](Self%20supervised%20learning/image%2028.png)
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2028.png" alt="">
+</figure>
 
-![image.png](Self%20supervised%20learning/image%2029.png)
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2029.png" alt="">
+</figure>
 
-![image.png](Self%20supervised%20learning/image%2030.png)
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2030.png" alt="">
+</figure>
 
 - The MSE (mean squared error loss) in the pixel space between the input image and the reconstructed image is adopted. (similar to reconstruction loss in Context Encoder)
 - Loss is only computed for masked patches.
 
-![image.png](Self%20supervised%20learning/image%2031.png)
+<figure class="align-center" style="max-width: 680px;">
+  <img src="/images/Self%20supervised%20learning/image%2031.png" alt="">
+</figure>
 
 **Some ablation studies in the paper:**
 
@@ -768,7 +803,5 @@ Let's then dive into the work from famous Masked Auto Encoder(He et al., 2021).
     - **FitNets**：直接让小模型的中间层去拟合大模型的中间层（学你怎么画特征图）。
     - **BYOL**：自监督学习里的经典，让 Student 支路去预测 Teacher 支路产出的特征向量。
 </aside>
-
-
 
 
